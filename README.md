@@ -1,2 +1,2 @@
-# gamma-pkg
-The repository for the Gamma Package Manager.
+# Gamma Package Manager
+A simple and lightweight package manager.
