@@ -1,0 +1,25 @@
+#!/bin/bash
+echo "Gamma Package Manager"
+pkg=$1
+repo=$2
+opt=$3
+mkdir /bin/gamma/pkg/$pkg
+touch /bin/gamma/pkg/$pkg/INDEX
+echo "Fetching Repository Index..."
+if [ $opt = s ] || [ $opt = secure ] || [ $opt = e ]
+then
+	curl https://$repo/main.idx -o /bin/gamma/pkg/$pkg/INDEX
+else
+	curl http://$repo/main.idx -o /bin/gamma/pkg/$pkg/INDEX
+fi
+line=$(grep $pkg /bin/gamma/pkg/$pkg/INDEX)
+path=$(echo $line | sed -r "s/name = $(echo $pkg) ; path = //g")
+echo "Fetching Package..."
+if [ $opt = s ] || [ $opt = secure ] || [ $opt = e ]
+then
+	curl https://$path -o /bin/gamma/pkg/$pkg/archive.zip
+else
+	curl http://$path -o /bin/gamma/pkg/$pkg/archive.zip
+fi
+unzip /bin/gamma/pkg/$pkg/archive.zip -d /bin/gamma/pkg/$pkg
+echo "Install completed!"
